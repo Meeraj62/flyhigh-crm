@@ -1,9 +1,21 @@
 <x-app-layout>
-    <div class="max-w-2xl">
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">{{ isset($lead) ? 'Edit Lead' : 'Create Lead' }}</h1>
+    <div class="max-w-4xl mx-auto">
+        <div class="mb-6">
+            <a href="{{ route('leads.index') }}" class="inline-flex items-center gap-x-2 text-sm font-semibold text-primary-900 hover:text-primary-700">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Leads
+            </a>
+        </div>
 
-        <div class="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-lg p-6">
-            <form action="{{ isset($lead) ? route('leads.update', $lead) : route('leads.store') }}" method="POST">
+        <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg">
+            <div class="px-6 py-5 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900">{{ isset($lead) ? 'Edit Lead' : 'Create New Lead' }}</h2>
+                <p class="mt-1 text-sm text-gray-600">{{ isset($lead) ? 'Update lead information' : 'Add a new potential client to your pipeline' }}</p>
+            </div>
+
+            <form action="{{ isset($lead) ? route('leads.update', $lead) : route('leads.store') }}" method="POST" class="p-6">
                 @csrf
                 @if(isset($lead))
                     @method('PUT')
@@ -12,72 +24,93 @@
                 <div class="space-y-6">
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <div>
-                            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-                            <input type="text" name="first_name" id="first_name" value="{{ old('first_name', $lead->first_name ?? '') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <label for="first_name" class="block text-sm font-semibold leading-6 text-gray-900">First Name <span class="text-red-500">*</span></label>
+                            <div class="mt-2">
+                                <input type="text" name="first_name" id="first_name" value="{{ old('first_name', $lead->first_name ?? '') }}" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('first_name') ring-red-500 @enderror">
+                            </div>
                             @error('first_name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div>
-                            <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" value="{{ old('last_name', $lead->last_name ?? '') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <label for="last_name" class="block text-sm font-semibold leading-6 text-gray-900">Last Name <span class="text-red-500">*</span></label>
+                            <div class="mt-2">
+                                <input type="text" name="last_name" id="last_name" value="{{ old('last_name', $lead->last_name ?? '') }}" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('last_name') ring-red-500 @enderror">
+                            </div>
                             @error('last_name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
 
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', $lead->email ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('email')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div>
+                            <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Email Address</label>
+                            <div class="mt-2">
+                                <input type="email" name="email" id="email" value="{{ old('email', $lead->email ?? '') }}" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('email') ring-red-500 @enderror" placeholder="john@example.com">
+                            </div>
+                            @error('email')
+                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold leading-6 text-gray-900">Phone Number</label>
+                            <div class="mt-2">
+                                <input type="tel" name="phone" id="phone" value="{{ old('phone', $lead->phone ?? '') }}" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('phone') ring-red-500 @enderror" placeholder="+1 (555) 000-0000">
+                            </div>
+                            @error('phone')
+                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
-                    <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                        <input type="text" name="phone" id="phone" value="{{ old('phone', $lead->phone ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('phone')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div>
+                            <label for="source" class="block text-sm font-semibold leading-6 text-gray-900">Lead Source</label>
+                            <div class="mt-2">
+                                <select name="source" id="source" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('source') ring-red-500 @enderror">
+                                    <option value="">Select Source</option>
+                                    <option value="website" {{ old('source', $lead->source ?? '') === 'website' ? 'selected' : '' }}>Website</option>
+                                    <option value="referral" {{ old('source', $lead->source ?? '') === 'referral' ? 'selected' : '' }}>Referral</option>
+                                    <option value="social_media" {{ old('source', $lead->source ?? '') === 'social_media' ? 'selected' : '' }}>Social Media</option>
+                                    <option value="email" {{ old('source', $lead->source ?? '') === 'email' ? 'selected' : '' }}>Email Campaign</option>
+                                    <option value="walk_in" {{ old('source', $lead->source ?? '') === 'walk_in' ? 'selected' : '' }}>Walk In</option>
+                                    <option value="phone" {{ old('source', $lead->source ?? '') === 'phone' ? 'selected' : '' }}>Phone Call</option>
+                                    <option value="event" {{ old('source', $lead->source ?? '') === 'event' ? 'selected' : '' }}>Event</option>
+                                </select>
+                            </div>
+                            @error('source')
+                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <div>
-                        <label for="source" class="block text-sm font-medium text-gray-700">Source</label>
-                        <select name="source" id="source" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="">Select Source</option>
-                            <option value="website" {{ old('source', $lead->source ?? '') === 'website' ? 'selected' : '' }}>Website</option>
-                            <option value="referral" {{ old('source', $lead->source ?? '') === 'referral' ? 'selected' : '' }}>Referral</option>
-                            <option value="social_media" {{ old('source', $lead->source ?? '') === 'social_media' ? 'selected' : '' }}>Social Media</option>
-                            <option value="email" {{ old('source', $lead->source ?? '') === 'email' ? 'selected' : '' }}>Email Campaign</option>
-                            <option value="walk_in" {{ old('source', $lead->source ?? '') === 'walk_in' ? 'selected' : '' }}>Walk In</option>
-                        </select>
-                        @error('source')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                        <select name="status" id="status" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="new" {{ old('status', $lead->status ?? 'new') === 'new' ? 'selected' : '' }}>New</option>
-                            <option value="contacted" {{ old('status', $lead->status ?? '') === 'contacted' ? 'selected' : '' }}>Contacted</option>
-                            <option value="qualified" {{ old('status', $lead->status ?? '') === 'qualified' ? 'selected' : '' }}>Qualified</option>
-                            <option value="converted" {{ old('status', $lead->status ?? '') === 'converted' ? 'selected' : '' }}>Converted</option>
-                            <option value="lost" {{ old('status', $lead->status ?? '') === 'lost' ? 'selected' : '' }}>Lost</option>
-                        </select>
-                        @error('status')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <div>
+                            <label for="status" class="block text-sm font-semibold leading-6 text-gray-900">Status <span class="text-red-500">*</span></label>
+                            <div class="mt-2">
+                                <select name="status" id="status" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('status') ring-red-500 @enderror">
+                                    <option value="new" {{ old('status', $lead->status ?? 'new') === 'new' ? 'selected' : '' }}>New</option>
+                                    <option value="contacted" {{ old('status', $lead->status ?? '') === 'contacted' ? 'selected' : '' }}>Contacted</option>
+                                    <option value="qualified" {{ old('status', $lead->status ?? '') === 'qualified' ? 'selected' : '' }}>Qualified</option>
+                                    <option value="converted" {{ old('status', $lead->status ?? '') === 'converted' ? 'selected' : '' }}>Converted</option>
+                                    <option value="lost" {{ old('status', $lead->status ?? '') === 'lost' ? 'selected' : '' }}>Lost</option>
+                                </select>
+                            </div>
+                            @error('status')
+                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-6 flex items-center justify-end gap-x-3">
-                    <a href="{{ route('leads.index') }}" class="text-sm font-semibold text-gray-900">Cancel</a>
-                    <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                        {{ isset($lead) ? 'Update' : 'Create' }}
+                <div class="mt-8 flex items-center justify-end gap-x-4 border-t border-gray-200 pt-6">
+                    <a href="{{ route('leads.index') }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700">Cancel</a>
+                    <button type="submit" class="inline-flex justify-center items-center gap-x-2 rounded-md bg-primary-900 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-900 transition-colors duration-150">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {{ isset($lead) ? 'Update Lead' : 'Create Lead' }}
                     </button>
                 </div>
             </form>
