@@ -1,21 +1,17 @@
 <x-app-layout>
-    <div class="max-w-4xl mx-auto">
-        <div class="mb-6">
-            <a href="{{ route('programs.index') }}" class="inline-flex items-center gap-x-2 text-sm font-semibold text-primary-900 hover:text-primary-700">
-                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>
-                Back to Programs
-            </a>
+    <div class="space-y-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">{{ isset($program) ? 'Edit Program' : 'Add New Program' }}</h1>
+            <p class="mt-2 text-sm text-gray-700">{{ isset($program) ? 'Update program information' : 'Add a new academic program' }}</p>
         </div>
 
         <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg">
             <div class="px-6 py-5 border-b border-gray-200">
                 <h2 class="text-xl font-bold text-gray-900">{{ isset($program) ? 'Edit Program' : 'Create New Program' }}</h2>
-                <p class="mt-1 text-sm text-gray-600">{{ isset($program) ? 'Update lead information' : 'Add a new potential client to your pipeline' }}</p>
+                <p class="mt-1 text-sm text-gray-600">{{ isset($program) ? 'Update program details' : 'Add new academic program information' }}</p>
             </div>
 
-            <form action="{{ isset($program) ? route('leads.update', $program) : route('leads.store') }}" method="POST" class="p-6">
+            <form action="{{ isset($program) ? route('programs.update', $program) : route('programs.store') }}" method="POST" class="p-6">
                 @csrf
                 @if(isset($program))
                     @method('PUT')
@@ -24,91 +20,115 @@
                 <div class="space-y-6">
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <div>
-                            <label for="first_name" class="block text-sm font-semibold leading-6 text-gray-900">First Name <span class="text-red-500">*</span></label>
+                            <label for="university_id" class="block text-sm font-semibold leading-6 text-gray-900">University <span class="text-red-500">*</span></label>
                             <div class="mt-2">
-                                <input type="text" name="first_name" id="first_name" value="{{ old('first_name', $program->first_name ?? '') }}" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('first_name') ring-red-500 @enderror">
+                                <select name="university_id" id="university_id" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('university_id') ring-red-500 @enderror">
+                                    <option value="">Select University</option>
+                                    @foreach(\App\Models\University::orderBy('name')->get() as $university)
+                                        <option value="{{ $university->id }}" {{ old('university_id', $program->university_id ?? '') == $university->id ? 'selected' : '' }}>
+                                            {{ $university->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('university_id')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('first_name')
-                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
                         </div>
 
                         <div>
-                            <label for="last_name" class="block text-sm font-semibold leading-6 text-gray-900">Last Name <span class="text-red-500">*</span></label>
+                            <label for="title" class="block text-sm font-semibold leading-6 text-gray-900">Program Title <span class="text-red-500">*</span></label>
                             <div class="mt-2">
-                                <input type="text" name="last_name" id="last_name" value="{{ old('last_name', $program->last_name ?? '') }}" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('last_name') ring-red-500 @enderror">
+                                <input type="text" name="title" id="title" value="{{ old('title', $program->title ?? '') }}" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('title') ring-red-500 @enderror">
+                                @error('title')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('last_name')
-                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="description" class="block text-sm font-semibold leading-6 text-gray-900">Description</label>
+                        <div class="mt-2">
+                            <textarea name="description" id="description" rows="4" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('description') ring-red-500 @enderror">{{ old('description', $program->description ?? '') }}</textarea>
+                            @error('description')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                        <div>
+                            <label for="degree_type" class="block text-sm font-semibold leading-6 text-gray-900">Degree Type <span class="text-red-500">*</span></label>
+                            <div class="mt-2">
+                                <select name="degree_type" id="degree_type" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('degree_type') ring-red-500 @enderror">
+                                    <option value="">Select Degree Type</option>
+                                    <option value="bachelor" {{ old('degree_type', $program->degree_type ?? '') == 'bachelor' ? 'selected' : '' }}>Bachelor</option>
+                                    <option value="master" {{ old('degree_type', $program->degree_type ?? '') == 'master' ? 'selected' : '' }}>Master</option>
+                                    <option value="phd" {{ old('degree_type', $program->degree_type ?? '') == 'phd' ? 'selected' : '' }}>PhD</option>
+                                    <option value="diploma" {{ old('degree_type', $program->degree_type ?? '') == 'diploma' ? 'selected' : '' }}>Diploma</option>
+                                </select>
+                                @error('degree_type')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="duration" class="block text-sm font-semibold leading-6 text-gray-900">Duration</label>
+                            <div class="mt-2">
+                                <input type="text" name="duration" id="duration" value="{{ old('duration', $program->duration ?? '') }}" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('duration') ring-red-500 @enderror" placeholder="e.g., 2 years">
+                                @error('duration')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="currency" class="block text-sm font-semibold leading-6 text-gray-900">Currency</label>
+                            <div class="mt-2">
+                                <select name="currency" id="currency" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('currency') ring-red-500 @enderror">
+                                    <option value="USD" {{ old('currency', $program->currency ?? 'USD') == 'USD' ? 'selected' : '' }}>USD</option>
+                                    <option value="EUR" {{ old('currency', $program->currency ?? '') == 'EUR' ? 'selected' : '' }}>EUR</option>
+                                    <option value="GBP" {{ old('currency', $program->currency ?? '') == 'GBP' ? 'selected' : '' }}>GBP</option>
+                                </select>
+                                @error('currency')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="tuition_fee" class="block text-sm font-semibold leading-6 text-gray-900">Tuition Fee</label>
+                        <div class="mt-2">
+                            <input type="number" step="0.01" name="tuition_fee" id="tuition_fee" value="{{ old('tuition_fee', $program->tuition_fee ?? '') }}" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('tuition_fee') ring-red-500 @enderror" placeholder="25000.00">
+                            @error('tuition_fee')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <div>
-                            <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Email Address</label>
-                            <div class="mt-2">
-                                <input type="email" name="email" id="email" value="{{ old('email', $program->email ?? '') }}" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('email') ring-red-500 @enderror" placeholder="john@example.com">
-                            </div>
-                            @error('email')
-                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                        <div class="flex items-center gap-x-3">
+                            <input type="hidden" name="is_featured" value="0">
+                            <input type="checkbox" name="is_featured" id="is_featured" value="1" {{ old('is_featured', $program->is_featured ?? false) ? 'checked' : '' }} class="h-4 w-4 rounded border-gray-300 text-primary-900 focus:ring-primary-900">
+                            <label for="is_featured" class="block text-sm font-semibold leading-6 text-gray-900">Featured Program</label>
                         </div>
 
-                        <div>
-                            <label for="phone" class="block text-sm font-semibold leading-6 text-gray-900">Phone Number</label>
-                            <div class="mt-2">
-                                <input type="tel" name="phone" id="phone" value="{{ old('phone', $program->phone ?? '') }}" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('phone') ring-red-500 @enderror" placeholder="+1 (555) 000-0000">
-                            </div>
-                            @error('phone')
-                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <div>
-                            <label for="source" class="block text-sm font-semibold leading-6 text-gray-900">Program Source</label>
-                            <div class="mt-2">
-                                <select name="source" id="source" class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('source') ring-red-500 @enderror">
-                                    <option value="">Select Source</option>
-                                    <option value="website" {{ old('source', $program->source ?? '') === 'website' ? 'selected' : '' }}>Website</option>
-                                    <option value="referral" {{ old('source', $program->source ?? '') === 'referral' ? 'selected' : '' }}>Referral</option>
-                                    <option value="social_media" {{ old('source', $program->source ?? '') === 'social_media' ? 'selected' : '' }}>Social Media</option>
-                                    <option value="email" {{ old('source', $program->source ?? '') === 'email' ? 'selected' : '' }}>Email Campaign</option>
-                                    <option value="walk_in" {{ old('source', $program->source ?? '') === 'walk_in' ? 'selected' : '' }}>Walk In</option>
-                                    <option value="phone" {{ old('source', $program->source ?? '') === 'phone' ? 'selected' : '' }}>Phone Call</option>
-                                    <option value="event" {{ old('source', $program->source ?? '') === 'event' ? 'selected' : '' }}>Event</option>
-                                </select>
-                            </div>
-                            @error('source')
-                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label for="status" class="block text-sm font-semibold leading-6 text-gray-900">Status <span class="text-red-500">*</span></label>
-                            <div class="mt-2">
-                                <select name="status" id="status" required class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6 @error('status') ring-red-500 @enderror">
-                                    <option value="new" {{ old('status', $program->status ?? 'new') === 'new' ? 'selected' : '' }}>New</option>
-                                    <option value="contacted" {{ old('status', $program->status ?? '') === 'contacted' ? 'selected' : '' }}>Contacted</option>
-                                    <option value="qualified" {{ old('status', $program->status ?? '') === 'qualified' ? 'selected' : '' }}>Qualified</option>
-                                    <option value="converted" {{ old('status', $program->status ?? '') === 'converted' ? 'selected' : '' }}>Converted</option>
-                                    <option value="lost" {{ old('status', $program->status ?? '') === 'lost' ? 'selected' : '' }}>Lost</option>
-                                </select>
-                            </div>
-                            @error('status')
-                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                        <div class="flex items-center gap-x-3">
+                            <input type="hidden" name="is_active" value="0">
+                            <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $program->is_active ?? true) ? 'checked' : '' }} class="h-4 w-4 rounded border-gray-300 text-primary-900 focus:ring-primary-900">
+                            <label for="is_active" class="block text-sm font-semibold leading-6 text-gray-900">Active</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-8 flex items-center justify-end gap-x-4 border-t border-gray-200 pt-6">
                     <a href="{{ route('programs.index') }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700">Cancel</a>
-                    <button type="submit" class="inline-flex justify-center items-center gap-x-2 rounded-md bg-primary-900 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-900 transition-colors duration-150">
+                    <button type="submit" class="inline-flex items-center gap-x-2 rounded-md bg-primary-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-900">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                         </svg>
                         {{ isset($program) ? 'Update Program' : 'Create Program' }}
                     </button>

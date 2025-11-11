@@ -175,7 +175,7 @@
                                     </svg>
                                 </div>
                                 <div class="ml-4 min-w-0 flex-1">
-                                    <p class="text-sm font-semibold text-gray-900 truncate">{{ $appointment->title }}</p>
+                                    <p class="text-sm font-semibold text-gray-900 truncate">Meeting with {{ $appointment->student ? $appointment->student->name : 'N/A' }}</p>
                                     <p class="text-sm text-gray-500">{{ $appointment->start_at->format('M d, Y - g:i A') }}</p>
                                 </div>
                             </div>
