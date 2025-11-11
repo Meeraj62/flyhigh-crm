@@ -12,10 +12,10 @@
         <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg">
             <div class="px-6 py-5 border-b border-gray-200">
                 <h2 class="text-xl font-bold text-gray-900">{{ isset($student) ? 'Edit Student' : 'Create New Student' }}</h2>
-                <p class="mt-1 text-sm text-gray-600">{{ isset($student) ? 'Update lead information' : 'Add a new potential client to your pipeline' }}</p>
+                <p class="mt-1 text-sm text-gray-600">{{ isset($student) ? 'Update student information' : 'Add a new student to your system' }}</p>
             </div>
 
-            <form action="{{ isset($student) ? route('leads.update', $student) : route('leads.store') }}" method="POST" class="p-6">
+            <form action="{{ isset($student) ? route('students.update', $student) : route('students.store') }}" method="POST" class="p-6">
                 @csrf
                 @if(isset($student))
                     @method('PUT')

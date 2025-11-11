@@ -26,7 +26,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                 </svg>
                             </div>
-                            <input type="search" id="search" x-model="searchQuery" class="block w-full rounded-md border-0 py-2 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6" placeholder="Search leads...">
+                            <input type="search" id="search" x-model="searchQuery" class="block w-full rounded-md border-0 py-2 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-900 sm:text-sm sm:leading-6" placeholder="Search students...">
                         </div>
                     </div>
                     <div class="flex gap-2">
@@ -100,7 +100,7 @@
                                     </svg>
                                     Edit
                                 </a>
-                                <form action="{{ route('students.destroy', $student) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this lead?')">
+                                <form action="{{ route('students.destroy', $student) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this student?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="inline-flex items-center gap-x-1 text-red-600 hover:text-red-900 font-medium">
@@ -118,8 +118,8 @@
                                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                 </svg>
-                                <h3 class="mt-2 text-sm font-semibold text-gray-900">No leads found</h3>
-                                <p class="mt-1 text-sm text-gray-500">Get started by creating a new lead.</p>
+                                <h3 class="mt-2 text-sm font-semibold text-gray-900">No students found</h3>
+                                <p class="mt-1 text-sm text-gray-500">Get started by creating a new student.</p>
                                 <div class="mt-6">
                                     <a href="{{ route('students.form') }}" class="inline-flex items-center gap-x-2 rounded-md bg-primary-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-800">
                                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
