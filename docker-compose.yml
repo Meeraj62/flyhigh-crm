@@ -1,0 +1,64 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: flyhigh-crm
+    container_name: flyhigh-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - flyhigh-network
+    depends_on:
+      - db
+      - redis
+    environment:
+      - APP_ENV=local
+      - DB_HOST=db
+      - REDIS_HOST=redis
+
+  nginx:
+    image: nginx:alpine
+    container_name: flyhigh-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d/
+    networks:
+      - flyhigh-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: flyhigh-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: flyhigh_crm
+      POSTGRES_USER: flyhigh_user
+      POSTGRES_PASSWORD: flyhigh_password
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - flyhigh-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: flyhigh-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - flyhigh-network
+
+networks:
+  flyhigh-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
