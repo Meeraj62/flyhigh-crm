@@ -9,52 +9,56 @@ class StudentController extends Controller
 {
     public function index()
     {
-        return view('students.index');
+        $students = Student::with('user')->latest()->paginate(15);
+        return view('students.index', compact('students'));
     }
 
-    public function create()
+    public function form(Student $student = null)
     {
-        return view('students.create');
+        return view('students.form', compact('student'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'student_id' => 'nullable|string|unique:students',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students',
+            'phone' => 'nullable|string',
+            'date_of_birth' => 'nullable|date',
             'passport_number' => 'nullable|string',
-            'nationality' => 'nullable|string',
+            'status' => 'required|string',
         ]);
 
         Student::create($validated);
-        return redirect()->route('students.index')->with('success', 'Student created successfully');
-    }
 
-    public function show(Student $student)
-    {
-        return view('students.show', compact('student'));
-    }
-
-    public function edit(Student $student)
-    {
-        return view('students.edit', compact('student'));
+        return redirect()->route('students.index')
+            ->with('toast', json_encode(['message' => 'Student created successfully', 'type' => 'success']));
     }
 
     public function update(Request $request, Student $student)
     {
         $validated = $request->validate([
-            'student_id' => 'nullable|string|unique:students,student_id,' . $student->id,
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students,email,' . $student->id,
+            'phone' => 'nullable|string',
+            'date_of_birth' => 'nullable|date',
             'passport_number' => 'nullable|string',
-            'nationality' => 'nullable|string',
+            'status' => 'required|string',
         ]);
 
         $student->update($validated);
-        return redirect()->route('students.index')->with('success', 'Student updated successfully');
+
+        return redirect()->route('students.index')
+            ->with('toast', json_encode(['message' => 'Student updated successfully', 'type' => 'success']));
     }
 
     public function destroy(Student $student)
     {
         $student->delete();
-        return redirect()->route('students.index')->with('success', 'Student deleted successfully');
+
+        return redirect()->route('students.index')
+            ->with('toast', json_encode(['message' => 'Student deleted successfully', 'type' => 'success']));
     }
 }

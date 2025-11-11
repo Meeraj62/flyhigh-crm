@@ -2,63 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
+use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $appointments = Appointment::with(['student', 'consultant'])
+            ->latest('start_at')
+            ->paginate(15);
+        return view('appointments.index', compact('appointments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function form(Appointment $appointment = null)
     {
-        //
+        $students = Student::all();
+        $consultants = User::role(['admin', 'consultant'])->get();
+        return view('appointments.form', compact('appointment', 'students', 'consultants'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'student_id' => 'nullable|exists:students,id',
+            'consultant_id' => 'required|exists:users,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_at' => 'required|date',
+            'end_at' => 'required|date|after:start_at',
+            'status' => 'required|string',
+            'meeting_url' => 'nullable|url',
+        ]);
+
+        Appointment::create($validated);
+
+        return redirect()->route('appointments.index')
+            ->with('toast', json_encode(['message' => 'Appointment created successfully', 'type' => 'success']));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(Request $request, Appointment $appointment)
     {
-        //
+        $validated = $request->validate([
+            'student_id' => 'nullable|exists:students,id',
+            'consultant_id' => 'required|exists:users,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_at' => 'required|date',
+            'end_at' => 'required|date|after:start_at',
+            'status' => 'required|string',
+            'meeting_url' => 'nullable|url',
+        ]);
+
+        $appointment->update($validated);
+
+        return redirect()->route('appointments.index')
+            ->with('toast', json_encode(['message' => 'Appointment updated successfully', 'type' => 'success']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(Appointment $appointment)
     {
-        //
-    }
+        $appointment->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('appointments.index')
+            ->with('toast', json_encode(['message' => 'Appointment deleted successfully', 'type' => 'success']));
     }
 }

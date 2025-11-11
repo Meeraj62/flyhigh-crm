@@ -28,12 +28,42 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('leads', LeadController::class);
-    Route::resource('students', StudentController::class);
-    Route::resource('universities', UniversityController::class);
-    Route::resource('programs', ProgramController::class);
-    Route::resource('appointments', AppointmentController::class);
-    Route::resource('courses', CourseController::class);
+    Route::get('leads', [LeadController::class, 'index'])->name('leads.index');
+    Route::get('leads/form/{lead?}', [LeadController::class, 'form'])->name('leads.form');
+    Route::post('leads', [LeadController::class, 'store'])->name('leads.store');
+    Route::put('leads/{lead}', [LeadController::class, 'update'])->name('leads.update');
+    Route::delete('leads/{lead}', [LeadController::class, 'destroy'])->name('leads.destroy');
+
+    Route::get('students', [StudentController::class, 'index'])->name('students.index');
+    Route::get('students/form/{student?}', [StudentController::class, 'form'])->name('students.form');
+    Route::post('students', [StudentController::class, 'store'])->name('students.store');
+    Route::put('students/{student}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+    Route::get('universities', [UniversityController::class, 'index'])->name('universities.index');
+    Route::get('universities/form/{university?}', [UniversityController::class, 'form'])->name('universities.form');
+    Route::post('universities', [UniversityController::class, 'store'])->name('universities.store');
+    Route::put('universities/{university}', [UniversityController::class, 'update'])->name('universities.update');
+    Route::delete('universities/{university}', [UniversityController::class, 'destroy'])->name('universities.destroy');
+
+    Route::get('programs', [ProgramController::class, 'index'])->name('programs.index');
+    Route::get('programs/form/{program?}', [ProgramController::class, 'form'])->name('programs.form');
+    Route::post('programs', [ProgramController::class, 'store'])->name('programs.store');
+    Route::put('programs/{program}', [ProgramController::class, 'update'])->name('programs.update');
+    Route::delete('programs/{program}', [ProgramController::class, 'destroy'])->name('programs.destroy');
+
+    Route::get('appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+    Route::get('appointments/form/{appointment?}', [AppointmentController::class, 'form'])->name('appointments.form');
+    Route::post('appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+    Route::put('appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
+    Route::delete('appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
+    Route::get('courses', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('courses/form/{course?}', [CourseController::class, 'form'])->name('courses.form');
+    Route::post('courses', [CourseController::class, 'store'])->name('courses.store');
+    Route::put('courses/{course}', [CourseController::class, 'update'])->name('courses.update');
+    Route::delete('courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
+
     Route::resource('service-orders', ServiceOrderController::class);
 
     Route::prefix('settings')->name('settings.')->group(function () {

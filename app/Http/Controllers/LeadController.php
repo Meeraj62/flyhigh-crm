@@ -9,12 +9,13 @@ class LeadController extends Controller
 {
     public function index()
     {
-        return view('leads.index');
+        $leads = Lead::latest()->paginate(15);
+        return view('leads.index', compact('leads'));
     }
 
-    public function create()
+    public function form(Lead $lead = null)
     {
-        return view('leads.create');
+        return view('leads.form', compact('lead'));
     }
 
     public function store(Request $request)
@@ -29,17 +30,9 @@ class LeadController extends Controller
         ]);
 
         Lead::create($validated);
-        return redirect()->route('leads.index')->with('success', 'Lead created successfully');
-    }
 
-    public function show(Lead $lead)
-    {
-        return view('leads.show', compact('lead'));
-    }
-
-    public function edit(Lead $lead)
-    {
-        return view('leads.edit', compact('lead'));
+        return redirect()->route('leads.index')
+            ->with('toast', json_encode(['message' => 'Lead created successfully', 'type' => 'success']));
     }
 
     public function update(Request $request, Lead $lead)
@@ -49,16 +42,21 @@ class LeadController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'nullable|email',
             'phone' => 'nullable|string',
+            'source' => 'nullable|string',
             'status' => 'required|string',
         ]);
 
         $lead->update($validated);
-        return redirect()->route('leads.index')->with('success', 'Lead updated successfully');
+
+        return redirect()->route('leads.index')
+            ->with('toast', json_encode(['message' => 'Lead updated successfully', 'type' => 'success']));
     }
 
     public function destroy(Lead $lead)
     {
         $lead->delete();
-        return redirect()->route('leads.index')->with('success', 'Lead deleted successfully');
+
+        return redirect()->route('leads.index')
+            ->with('toast', json_encode(['message' => 'Lead deleted successfully', 'type' => 'success']));
     }
 }
