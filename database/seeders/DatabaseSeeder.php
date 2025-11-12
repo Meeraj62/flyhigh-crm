@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->createRolesAndPermissions();
+        // Seed roles and permissions using dedicated seeder
+        $this->call(RolesAndPermissionsSeeder::class);
+
         $this->createUsers();
         $this->createUniversitiesAndPrograms();
         $this->createCourses();
@@ -27,27 +29,6 @@ class DatabaseSeeder extends Seeder
         $this->createLeads();
         $this->createBlogCategories();
         $this->createSettings();
-    }
-
-    private function createRolesAndPermissions()
-    {
-        $roles = ['admin', 'staff', 'consultant', 'student', 'sub-agent'];
-        foreach ($roles as $role) {
-            Role::create(['name' => $role]);
-        }
-
-        $permissions = [
-            'manage users', 'manage leads', 'manage students', 'manage universities',
-            'manage programs', 'manage courses', 'manage appointments', 'manage services',
-            'manage payments', 'manage settings', 'view analytics', 'manage blog',
-        ];
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
-        }
-
-        Role::findByName('admin')->givePermissionTo(Permission::all());
-        Role::findByName('staff')->givePermissionTo(['manage leads', 'manage students', 'view analytics']);
-        Role::findByName('consultant')->givePermissionTo(['manage appointments', 'manage leads']);
     }
 
     private function createUsers()
