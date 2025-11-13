@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     AuthController,
     DashboardController,
+    HomeController,
     LeadController,
     StudentController,
     UniversityController,
@@ -14,9 +15,21 @@ use App\Http\Controllers\{
 };
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+// Public Website Routes
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/services', [HomeController::class, 'services'])->name('public.services');
+Route::get('/services/{slug}', [HomeController::class, 'serviceDetail'])->name('public.service.detail');
+Route::get('/universities', [HomeController::class, 'universities'])->name('public.universities');
+Route::get('/universities/{slug}', [HomeController::class, 'universityDetail'])->name('public.university.detail');
+Route::get('/programs', [HomeController::class, 'programs'])->name('public.programs');
+Route::get('/programs/{slug}', [HomeController::class, 'programDetail'])->name('public.program.detail');
+Route::get('/courses', [HomeController::class, 'courses'])->name('public.courses');
+Route::get('/courses/{slug}', [HomeController::class, 'courseDetail'])->name('public.course.detail');
+Route::get('/blog', [HomeController::class, 'blog'])->name('public.blog');
+Route::get('/blog/{slug}', [HomeController::class, 'blogPost'])->name('public.blog.post');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
