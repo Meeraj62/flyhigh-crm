@@ -29,6 +29,9 @@ class DatabaseSeeder extends Seeder
         $this->createLeads();
         $this->createBlogCategories();
         $this->createSettings();
+
+        // Seed demo content (blog posts, etc.)
+        $this->call(DemoContentSeeder::class);
     }
 
     private function createUsers()

@@ -182,8 +182,21 @@ class HomeController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Here you would typically send an email or save to database
-        // For now, just return success
+        // Parse name into first and last name
+        $nameParts = explode(' ', trim($validated['name']), 2);
+        $firstName = $nameParts[0];
+        $lastName = $nameParts[1] ?? '';
+
+        // Create a lead from the contact form
+        \App\Models\Lead::create([
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'source' => 'website',
+            'status' => 'new',
+            'notes' => "Subject: {$validated['subject']}\n\nMessage: {$validated['message']}",
+        ]);
 
         return back()->with('success', 'Thank you for contacting us! We will get back to you soon.');
     }
