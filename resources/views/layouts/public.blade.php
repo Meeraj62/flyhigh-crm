@@ -38,13 +38,13 @@
         }
     </style>
 </head>
-<body class="antialiased bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+<body class="antialiased bg-gradient-to-br from-primary-50 via-gray-50 to-accent-50 min-h-screen">
 
-    <!-- Animated Background Blobs -->
+    <!-- Animated Background Blobs with Emerald + Amber -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400 to-cyan-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div class="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400 to-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-1/3 w-96 h-96 bg-gradient-to-r from-indigo-400 to-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-primary-300 to-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-blob"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-accent-300 to-accent-200 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-1/3 w-96 h-96 bg-gradient-to-r from-primary-400 to-accent-300 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-blob animation-delay-4000"></div>
     </div>
 
     <!-- Glass Navbar -->
