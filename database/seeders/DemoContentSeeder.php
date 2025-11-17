@@ -49,7 +49,7 @@ class DemoContentSeeder extends Seeder
             [
                 'title' => 'Scholarship Opportunities for International Students',
                 'slug' => 'scholarship-opportunities-international-students',
-                'excerpt' => 'Funding your education abroad doesn't have to be a burden. Explore various scholarship opportunities available for international students.',
+                'excerpt' => 'Funding your education abroad doesn\'t have to be a burden. Explore various scholarship opportunities available for international students.',
                 'content' => "Studying abroad can be expensive, but numerous scholarships can help ease the financial burden:\n\n1. Government Scholarships\n- Fulbright Program (USA)\n- Chevening Scholarships (UK)\n- Australia Awards\n- DAAD Scholarships (Germany)\n\n2. University Scholarships\nMost top universities offer merit-based and need-based scholarships specifically for international students.\n\n3. Private Scholarships\nMany organizations and foundations provide scholarships based on academic excellence, leadership, or specific fields of study.\n\nTips for Success:\n- Start your search early\n- Apply to multiple scholarships\n- Tailor each application\n- Highlight your unique qualities\n- Meet all deadlines",
                 'status' => 'published',
                 'published_at' => now()->subDays(20),
@@ -76,7 +76,7 @@ class DemoContentSeeder extends Seeder
             [
                 'title' => 'How to Choose the Right Program for Your Career Goals',
                 'slug' => 'how-to-choose-right-program-career-goals',
-                'excerpt' => 'Selecting the right academic program is crucial for your future career. Here's how to make an informed decision.',
+                'excerpt' => 'Selecting the right academic program is crucial for your future career. Here\'s how to make an informed decision.',
                 'content' => "Choosing the right program requires careful consideration:\n\n1. Assess Your Interests\nWhat subjects genuinely excite you? What problems do you want to solve?\n\n2. Research Career Paths\nInvestigate job prospects, salary ranges, and growth potential in your field of interest.\n\n3. Consider Program Reputation\nLook at university rankings, faculty expertise, and industry connections.\n\n4. Evaluate Curriculum\nEnsure the program offers courses aligned with your career goals.\n\n5. Check Accreditation\nVerify that the program is properly accredited in your field.\n\n6. Look at Alumni Success\nResearch where graduates from the program are working.\n\n7. Consider Location\nThink about internship opportunities and industry connections in the area.\n\n8. Factor in Cost\nBalance program quality with affordability and scholarship opportunities.\n\n9. Assess Support Services\nLook for programs offering career counseling, internships, and job placement assistance.\n\n10. Trust Your Instincts\nChoose a program where you feel you'll thrive academically and personally.",
                 'status' => 'published',
                 'published_at' => now()->subDays(50),
